@@ -3,7 +3,7 @@ name: Deploy to Production
 on:
   push:
     branches:
-      - main  # Change if you deploy from another branch
+      - main  
 
 jobs:
   deploy:
@@ -44,6 +44,15 @@ jobs:
           source: "."
           target: "/root/apps/bettermoveco"
           rm: true
+          script: |
+            set -e
+            cd /root/apps/bettermoveco
+            git add .
+            git stash
+            git pull
+            cd /root/apps/bettermoveco
+            chmod +x start-application.sh          
+            ./start-application.sh
 
       - name: SSH and Deploy
         uses: appleboy/ssh-action@v1.0.0
